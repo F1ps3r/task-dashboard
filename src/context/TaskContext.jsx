@@ -49,8 +49,9 @@ export const TaskProvider = ({ children }) => {
   const completeAllTasks = (taskIds = null) => {
     if (taskIds) {
       // Complete specific tasks (for task lists)
+      const taskIdSet = new Set(taskIds);
       setTasks(tasks.map(task => 
-        taskIds.includes(task.id) ? { ...task, isCompleted: true } : task
+        taskIdSet.has(task.id) ? { ...task, isCompleted: true } : task
       ));
     } else {
       // Complete all tasks
@@ -61,7 +62,8 @@ export const TaskProvider = ({ children }) => {
   const deleteCompletedTasks = (taskIds = null) => {
     if (taskIds && taskIds.length > 0) {
       // Delete specific completed tasks (for task lists)
-      setTasks(tasks.filter(task => !taskIds.includes(task.id)));
+      const taskIdSet = new Set(taskIds);
+      setTasks(tasks.filter(task => !taskIdSet.has(task.id)));
     } else {
       // Delete all completed tasks
       setTasks(tasks.filter(task => !task.isCompleted));
